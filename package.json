@@ -1,5 +1,5 @@
 {
-  "name": "@rc-component/trigger",
+  "name": "@easyops-cn/rc-trigger",
   "version": "2.1.1",
   "description": "base abstract trigger component for react",
   "engines": {
@@ -33,7 +33,7 @@
     "start": "dumi dev",
     "build": "dumi build",
     "compile": "father build && lessc assets/index.less assets/index.css",
-    "prepublishOnly": "npm run compile && np --yolo --no-publish",
+    "prepublishOnly": "npm run compile && np --yolo --no-publish --any-branch",
     "lint": "eslint src/ docs/examples/ --ext .tsx,.ts,.jsx,.js",
     "test": "rc-test",
     "coverage": "rc-test --coverage",
