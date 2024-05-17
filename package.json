@@ -5,6 +5,9 @@
   "engines": {
     "node": ">=8.x"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "react",
     "react-component",
