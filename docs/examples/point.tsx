@@ -1,7 +1,7 @@
 /* eslint no-console:0 */
 
 import React from 'react';
-import Trigger from 'rc-trigger';
+import Trigger, { ActionType } from 'rc-trigger';
 import '../../assets/index.less';
 import './point.less';
 
@@ -12,12 +12,14 @@ const builtinPlacements = {
 };
 
 const innerTrigger = (
-  <div style={{ padding: 20, background: 'rgba(0, 255, 0, 0.3)' }}>This is popup</div>
+  <div style={{ padding: 20, background: 'rgba(0, 255, 0, 0.3)' }}>
+    This is popup
+  </div>
 );
 
 class Test extends React.Component {
   state = {
-    action: 'click',
+    action: 'click' as ActionType,
     mouseEnterDelay: 0,
   };
 
@@ -45,7 +47,11 @@ class Test extends React.Component {
         {action === 'hover' && (
           <label>
             Mouse enter delay:{' '}
-            <input type="text" value={mouseEnterDelay} onChange={this.onDelayChange} />
+            <input
+              type="text"
+              value={mouseEnterDelay}
+              onChange={this.onDelayChange}
+            />
           </label>
         )}
         <div style={{ margin: 50 }}>

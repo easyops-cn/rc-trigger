@@ -16,17 +16,28 @@ export default function useWinClick(
   const openRef = React.useRef(open);
   openRef.current = open;
 
+  const popupPointerDownRef = React.useRef(false);
+
   // Click to hide is special action since click popup element should not hide
   React.useEffect(() => {
     if (clickToHide && popupEle && (!mask || maskClosable)) {
+      const onPointerDown = () => {
+        popupPointerDownRef.current = false;
+      };
+
       const onTriggerClose = (e: MouseEvent) => {
-        if (openRef.current && !inPopupOrChild(e.target, e.composedPath())) {
+        if (
+          openRef.current &&
+          !inPopupOrChild(e.composedPath?.()?.[0] || e.target) &&
+          !popupPointerDownRef.current
+        ) {
           triggerOpen(false);
         }
       };
 
       const win = getWin(popupEle);
 
+      win.addEventListener('pointerdown', onPointerDown, true);
       win.addEventListener('mousedown', onTriggerClose, true);
       win.addEventListener('contextmenu', onTriggerClose, true);
 
@@ -49,6 +60,7 @@ export default function useWinClick(
       }
 
       return () => {
+        win.removeEventListener('pointerdown', onPointerDown, true);
         win.removeEventListener('mousedown', onTriggerClose, true);
         win.removeEventListener('contextmenu', onTriggerClose, true);
 
@@ -67,4 +79,10 @@ export default function useWinClick(
       };
     }
   }, [clickToHide, targetEle, popupEle, mask, maskClosable]);
+
+  function onPopupPointerDown() {
+    popupPointerDownRef.current = true;
+  }
+
+  return onPopupPointerDown;
 }

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type { CSSMotionProps } from 'rc-motion';
-import type { BuildInPlacements } from 'rc-trigger';
+import type { ActionType, BuildInPlacements } from 'rc-trigger';
 import Trigger from 'rc-trigger';
 import './case.less';
 
@@ -116,6 +116,10 @@ const Demo = () => {
     contextMenu,
   };
 
+  const actionsKeys = Object.keys(actions).filter(
+    (action) => actions[action],
+  ) as ActionType[];
+
   return (
     <React.StrictMode>
       <div>
@@ -203,7 +207,7 @@ const Demo = () => {
             maskMotion={motion ? MaskMotion : null}
             maskClosable={maskClosable}
             stretch={stretch}
-            action={Object.keys(actions).filter((action) => actions[action])}
+            action={actionsKeys}
             builtinPlacements={builtinPlacements}
             forceRender={forceRender}
             popupStyle={{

@@ -272,20 +272,20 @@ export function generateTrigger(
     const originChildProps = child?.props || {};
     const cloneProps: typeof originChildProps = {};
 
-    const inPopupOrChild = useEvent((ele: any, composedPathTargetList: EventTarget[]) => {
+    const inPopupOrChild = useEvent((ele: EventTarget) => {
       const childDOM = targetEle;
 
       return (
-        childDOM?.contains(ele) ||
+        childDOM?.contains(ele as HTMLElement) ||
         getShadowRoot(childDOM)?.host === ele ||
         ele === childDOM ||
-        popupEle?.contains(ele) ||
+        popupEle?.contains(ele as HTMLElement) ||
         getShadowRoot(popupEle)?.host === ele ||
         ele === popupEle ||
         Object.values(subPopupElements.current).some(
-          (subPopupEle) => subPopupEle?.contains(ele) || ele === subPopupEle,
-        ) ||
-        composedPathTargetList.includes(targetEle)
+          (subPopupEle) =>
+            subPopupEle?.contains(ele as HTMLElement) || ele === subPopupEle,
+        )
       );
     });
 
@@ -381,9 +381,9 @@ export function generateTrigger(
       React.useState<VoidFunction>(null);
 
     // =========================== Align ============================
-    const [mousePos, setMousePos] = React.useState<[x: number, y: number]>([
-      0, 0,
-    ]);
+    const [mousePos, setMousePos] = React.useState<
+      [x: number, y: number] | null
+    >(null);
 
     const setMousePosByEvent = (
       event: Pick<React.MouseEvent, 'clientX' | 'clientY'>,
@@ -406,7 +406,7 @@ export function generateTrigger(
     ] = useAlign(
       mergedOpen,
       popupEle,
-      alignPoint ? mousePos : targetEle,
+      alignPoint && mousePos !== null ? mousePos : targetEle,
       popupPlacement,
       builtinPlacements,
       popupAlign,
@@ -550,7 +550,7 @@ export function generateTrigger(
     }
 
     // Click to hide is special action since click popup element should not hide
-    useWinClick(
+    const onPopupPointerDown = useWinClick(
       mergedOpen,
       clickToHide,
       targetEle,
@@ -722,6 +722,7 @@ export function generateTrigger(
             fresh={fresh}
             // Click
             onClick={onPopupClick}
+            onPointerDownCapture={onPopupPointerDown}
             // Mask
             mask={mask}
             // Motion
