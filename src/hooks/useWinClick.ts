@@ -10,7 +10,7 @@ export default function useWinClick(
   popupEle: HTMLElement,
   mask: boolean,
   maskClosable: boolean,
-  inPopupOrChild: (target: EventTarget, composedPathTargetList: EventTarget[]) => boolean,
+  inPopupOrChild: (target: EventTarget) => boolean,
   triggerOpen: (open: boolean) => void,
 ) {
   const openRef = React.useRef(open);
